@@ -1,0 +1,35 @@
+<script src="oidc-client.min.js"></script>
+<script src="stateHelper.js"></script>
+<script>
+  var config = getCurrentOidcConfig();
+  var mgr = new Oidc.UserManager(config);
+  if (window.location.href.indexOf("?postLogout=true") > 0) {
+    mgr.signoutRedirectCallback().then(() => {
+      window.location = "/";
+    });
+  } else {
+    console.log("url to complete auth: " + window.location);
+
+    mgr.signinRedirectCallback(window.location).then(
+      // mgr.signinPopupCallback(window.location).then(
+      () => {
+        window.history.replaceState(
+          {},
+          window.document.title,
+          window.location.origin
+        );
+        window.location = "/";
+      },
+      (error) => {
+        console.error(error);
+        document.getElementById("status").innerHTML = error;
+        document.getElementById("gohome").style = "visibility: visible;";
+      }
+    );
+  }
+</script>
+<head>
+  Procesando respuesta autenticación
+</head>
+<p id="status">Procesando la respuesta de la autenticación</p>
+<a id="gohome" href="/" style="visibility: hidden">Ir al inicio</a>

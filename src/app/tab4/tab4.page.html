@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Use the tokens</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+  <ion-list>
+    <ion-item>
+      <ion-button *ngIf="hasRefreshToken()" (click)="signinSilent()">Refresh token</ion-button>
+      <ion-button *ngIf="!hasRefreshToken()" (click)="signinSilent()">Silent renew</ion-button>
+      <ion-label position="stacked">
+        <ion-text color="tertiary">If there is an available Refresh Token then it will be used first, else the app will try to silent renew the tokens</ion-text>
+      </ion-label>
+    </ion-item>
+    <ion-item *ngIf="hasRefreshToken()">
+      <ion-button (click)="removeRefresh()">Delete refresh token</ion-button>
+      <ion-label position="stacked">
+        <ion-text color="tertiary">Delete Refresh Token to force silent renew</ion-text>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Another API ID (resource)<ion-text color="danger">*</ion-text>
+      </ion-label>
+      <ion-input type="text" [(ngModel)]="secondApi"></ion-input>
+      <ion-button (click)="useRefreshForOtherApi()">Get Token</ion-button>
+    </ion-item>
+  </ion-list>
+  <ion-card *ngIf="hasAnotherAccessToken()">
+    <ion-card-header>
+      <ion-card-title>get another refresh token</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{getOtherAccessToken()}}
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngIf="isLoggedIn()">
+    <ion-card-header>
+      <ion-card-title>Use access token</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="full" class="ion-no-margin ion-no-padding">
+        <ion-list-header>
+          API parameters
+        </ion-list-header>
+        <ion-item>
+          <ion-label position="stacked">Url <ion-text color="danger">*</ion-text>
+          </ion-label>
+          <ion-input required type="url" [(ngModel)]="apiUrl"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Method <ion-text color="danger">*</ion-text>
+          </ion-label>
+          <ion-select [(ngModel)]="webMethod">
+            <ion-select-option value="GET">GET</ion-select-option>
+            <ion-select-option value="POST">POST</ion-select-option>
+            <ion-select-option value="PUT">PUT</ion-select-option>
+            <ion-select-option value="DELETE">DELETE</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item *ngIf="webMethodRequiresContent()">
+          <ion-label>Request content</ion-label>
+          <ion-textarea [(ngModel)]="requestContent"></ion-textarea>
+        </ion-item>
+      </ion-list>
+      <ion-button (click)="invokeApi()">Invoke</ion-button>
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngIf="isThereResponse()">
+    <ion-card-header>
+      <ion-card-title>Request results</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-text>
+        {{responseResult}}
+      </ion-text>
+      <ion-text>
+        {{responseContent}}
+      </ion-text>
+    </ion-card-content>
+  </ion-card>
+
+
+</ion-content>

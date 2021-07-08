@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title> Tokens </ion-title>
+    <!-- <ion-buttons slot="end">
+      <ion-button (click)="doRefresh()" *ngIf="hasRefreshToken()">
+        <ion-icon slot="end" name="refresh"></ion-icon>
+        Refresh token
+      </ion-button>
+      <ion-button (click)="doRefresh()" *ngIf="!hasRefreshToken()">
+        <ion-icon slot="end" name="mic-off"></ion-icon>
+        Silent renew
+      </ion-button>
+    </ion-buttons> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Tokens</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card *ngIf="isLoggedIn()">
+    <ion-card-header>
+      <ion-card-title>ID Token</ion-card-title>
+    </ion-card-header>
+    <ion-card-content> {{getIdToken()}} </ion-card-content>
+    <ion-button (click)="openToken('id_token', getIdToken())">
+      <ion-icon name="open-outline"></ion-icon>
+    </ion-button>
+  </ion-card>
+  <ion-card *ngIf="isLoggedIn()">
+    <ion-card-header>
+      <ion-card-title>Access Token</ion-card-title>
+      <ion-card-subtitle>Expires at: {{getExpiresAt()}}</ion-card-subtitle>
+      <ion-card-subtitle> scope: {{getScope()}} </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content> {{getAccessToken()}} </ion-card-content>
+    <ion-button (click)="openToken('access_token', getAccessToken())">
+      <ion-icon name="open-outline"></ion-icon>
+    </ion-button>
+  </ion-card>
+  <ion-card *ngIf="isLoggedIn()">
+    <ion-card-header>
+      <ion-card-title>Refresh Token</ion-card-title>
+    </ion-card-header>
+    <ion-card-content> {{getRefreshToken()}} </ion-card-content>
+  </ion-card>
+</ion-content>

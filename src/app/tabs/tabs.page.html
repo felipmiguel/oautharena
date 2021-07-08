@@ -1,0 +1,23 @@
+<ion-tabs>
+
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="tab1">
+      <ion-icon name="log-in"></ion-icon>
+      <ion-label>Login</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="tab2" [disabled]="!isLoggedIn()">
+      <ion-icon name="finger-print"></ion-icon>
+      <ion-label>Tokens</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="tab3" [disabled]="!isLoggedIn()">
+      <ion-icon name="receipt"></ion-icon>
+      <ion-label>Claims</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="tab4" [disabled]="!isLoggedIn()">
+      <ion-icon name="rocket"></ion-icon>
+      <ion-label>Tests</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

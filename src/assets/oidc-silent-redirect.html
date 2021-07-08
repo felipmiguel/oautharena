@@ -1,0 +1,10 @@
+<script src="oidc-client.min.js"></script>
+<script src="stateHelper.js"></script>
+<script>
+    var config = await getCurrentOidcConfig();
+
+    new Oidc.UserManager(config).signinSilentCallback()
+        .catch((err) => {
+            console.log(err);
+        });
+</script>

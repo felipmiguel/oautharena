@@ -1,0 +1,47 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Claims
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Claims</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- <ion-card *ngIf="isLoggedIn()">
+    <ion-card-header>
+      <ion-card-title>ID Token Claims</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row *ngFor="let claim of getIdTokenClaims()">
+          <ion-col>{{claim[0]}</ion-col><ion-col>{{claim[1]}}</ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>    
+  </ion-card> -->
+
+  <ion-card *ngIf="isLoggedIn()">
+    <ion-card-header>
+      <ion-card-title>ID Token Claims</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{getIdTokenClaims()}}
+    </ion-card-content>    
+  </ion-card>
+
+  <ion-card *ngIf="isLoggedIn()">
+    <ion-card-header>
+      <ion-card-title>Access Token Claims</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{getAccessTokenClaims()}}
+    </ion-card-content>    
+  </ion-card>
+
+</ion-content>
