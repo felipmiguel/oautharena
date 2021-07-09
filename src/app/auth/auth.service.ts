@@ -18,7 +18,7 @@ const { Storage } = Plugins;
   providedIn: "root",
 })
 export class AuthService {
-  
+
   private _userManager: UserManager;
   private _user: User;
 
@@ -52,14 +52,10 @@ export class AuthService {
     }
     console.log("current url: " + this.platform.url());
 
-    if (this.isApp()) {
-      redirect_uri = `${Constants.spaSchema}/auth-callback`;
-      logout_redirect_uri = `${Constants.spaSchema}/auth-logout`;
-    } else {
-      redirect_uri = `${this.getBaseUrl()}/assets/oidc-login-redirect.html`;
-      logout_redirect_uri = `${this.getBaseUrl()}/assets/oidc-login-redirect.html?postLogout=true`;
-    }
-    silent_redirect_uri = `${this.getBaseUrl()}/assets/oidc-silent-redirect.html`;
+    
+      redirect_uri = this.getRedirectUri();
+      logout_redirect_uri = this.getLogoutRedirectUri();
+    silent_redirect_uri = this.getSilentRedirectUri();
 
     let cfg: UserManagerSettings = {
       authority: authOptions.authority, // Authority is AAD/ADFS or any other authority
@@ -82,7 +78,29 @@ export class AuthService {
     return cfg;
   }
 
-  private getBaseUrl(): string {
+  public getRedirectUri(): string {
+    if (this.isApp()) {
+      return `${Constants.spaSchema}/auth-callback`;
+
+    } else {
+      return `${this.getBaseUrl()}/assets/oidc-login-redirect.html`;
+    }
+  }
+
+  public getLogoutRedirectUri(): string {
+    if (this.isApp()) {
+      return `${Constants.spaSchema}/auth-logout`;
+    } else {
+      return `${this.getBaseUrl()}/assets/oidc-login-redirect.html?postLogout=true`;
+    }
+  }
+
+  public getSilentRedirectUri(): string {
+    return `${this.getBaseUrl()}/assets/oidc-silent-redirect.html`;
+  }
+
+
+  public getBaseUrl(): string {
     console.log(`baseurl:${location.origin}`);
     return location.origin;
   }
@@ -115,7 +133,7 @@ export class AuthService {
   }
 
   private isApp(): boolean {
-    
+
     return this.platform.is("android") || this.platform.is("ios");
   }
 

@@ -1,52 +1,101 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Login
-    </ion-title>
+    <ion-title> Login </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-list lines="full" class="ion-no-margin ion-no-padding">
-    <ion-list-header>
-      App OAuth parameters
-    </ion-list-header>
+    <ion-list-header> App OAuth parameters </ion-list-header>
     <ion-item>
-      <ion-label position="stacked">Authority <ion-text color="danger">*</ion-text>
+      <ion-label position="stacked"
+        >Authority <ion-text color="danger">*</ion-text>
       </ion-label>
-      <ion-input required type="url" [(ngModel)]="authority" [readonly]="isLoggedIn()"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="stacked">Application Id <ion-text color="danger">*</ion-text>
-      </ion-label>
-      <ion-input required type="text" [(ngModel)]="appId" [readonly]="isLoggedIn()"></ion-input>
+      <ion-input
+        required
+        type="url"
+        [(ngModel)]="authority"
+        [readonly]="isLoggedIn()"
+      ></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="stacked">Secret<ion-text color="danger">*</ion-text>
+      <ion-label position="stacked"
+        >Application Id <ion-text color="danger">*</ion-text>
       </ion-label>
-      <ion-input type="text" [(ngModel)]="secret" [readonly]="isLoggedIn()"></ion-input>
+      <ion-input
+        required
+        type="text"
+        [(ngModel)]="appId"
+        [readonly]="isLoggedIn()"
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked"
+        >Secret<ion-text color="danger">*</ion-text>
+      </ion-label>
+      <ion-input
+        type="text"
+        [(ngModel)]="secret"
+        [readonly]="isLoggedIn()"
+      ></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="stacked">API (Resource)</ion-label>
-      <ion-input type="text" [(ngModel)]="targetApi" [readonly]="isLoggedIn()"></ion-input>
+      <ion-input
+        type="text"
+        [(ngModel)]="targetApi"
+        [readonly]="isLoggedIn()"
+      ></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="stacked">Resource/Scope</ion-label>
-      <ion-toggle slot="end" [(ngModel)]="targetAsResource" [disabled]="isLoggedIn()"></ion-toggle>
+      <ion-toggle
+        slot="end"
+        [(ngModel)]="targetAsResource"
+        [disabled]="isLoggedIn()"
+      ></ion-toggle>
     </ion-item>
     <ion-item>
-      <ion-label position="stacked">Scopes<ion-text color="danger">*</ion-text>
+      <ion-label position="stacked"
+        >Scopes<ion-text color="danger">*</ion-text>
       </ion-label>
-      <ion-input type="text" [(ngModel)]="scopes" [readonly]="isLoggedIn()"></ion-input>
+      <ion-input
+        type="text"
+        [(ngModel)]="scopes"
+        [readonly]="isLoggedIn()"
+      ></ion-input>
     </ion-item>
   </ion-list>
+  <ion-list lines="full" >
+    <ion-list-header>
+      Remember to configure following the redirect URIs in your identity
+      provider</ion-list-header
+    >
+
+    <ion-item>
+      <ion-label>{{getRedirectUri()}}</ion-label>
+      <ion-note>This is the url where the identity provider will redirect the browser after authenticate the user</ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{getLogoutRedirectUri()}}</ion-label>
+      <ion-note>This is the url where the identity provider will redirect the browser after logout the user</ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{getSilentRedirectUri()}}</ion-label>
+      <ion-note>This is the url that is open in an iframe trying silent renew. It also requires to configure X-Frame-Options in the identity provider </ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{getBaseUrl()}}</ion-label>
+      <ion-note color="important">This in a SPA application, so it is necessary to configure CORS in your STS to allow retrieve tokens.</ion-note>
+    </ion-item>
+  </ion-list>
+
   <div class="ion-padding">
     <ion-button (click)="login()" *ngIf="!isLoggedIn()">Start Login</ion-button>
     <ion-button (click)="logout()" *ngIf="isLoggedIn()">Logout</ion-button>
     <ion-button (click)="saveConfig()">Save configuration</ion-button>
   </div>
-  
+
   <ion-card *ngIf="!isLoggedIn()">
     <ion-card-header>
       <ion-card-title>Saved configurations</ion-card-title>
@@ -61,15 +110,16 @@
               <p>{{config.appId}}</p>
             </ion-label>
             <ion-item-options side="end">
-              <ion-button (click)="useConfig($event, config)"> Use it </ion-button>
-              <ion-button (click)="deleteConfig($event, config)" color="danger"> Delete </ion-button>
+              <ion-button (click)="useConfig($event, config)">
+                Use it
+              </ion-button>
+              <ion-button (click)="deleteConfig($event, config)" color="danger">
+                Delete
+              </ion-button>
             </ion-item-options>
           </ion-item>
         </ion-item-sliding>
       </ion-list>
-
     </ion-card-content>
   </ion-card>
-
-
 </ion-content>

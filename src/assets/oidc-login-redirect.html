@@ -11,7 +11,6 @@
     console.log("url to complete auth: " + window.location);
 
     mgr.signinRedirectCallback(window.location).then(
-      // mgr.signinPopupCallback(window.location).then(
       () => {
         window.history.replaceState(
           {},
@@ -24,12 +23,15 @@
         console.error(error);
         document.getElementById("status").innerHTML = error;
         document.getElementById("gohome").style = "visibility: visible;";
+        document.getElementById("description").style = "visibility: visible;";
+        document.getElementById("description").innerHTML= "If it is a network error, most probably you need to configure CORS in your STS to allow retrieving the token from this application."
       }
     );
   }
 </script>
 <head>
-  Procesando respuesta autenticación
+  Processing authentication response
 </head>
-<p id="status">Procesando la respuesta de la autenticación</p>
-<a id="gohome" href="/" style="visibility: hidden">Ir al inicio</a>
+<p id="status">Processing authentication response</p>
+<p id="description" style="visibility: hidden"></p>
+<a id="gohome" href="/" style="visibility: hidden">Home</a>

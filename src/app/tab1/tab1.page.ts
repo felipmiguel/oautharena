@@ -104,4 +104,17 @@ export class Tab1Page implements OnInit {
       targetAsResource: this.targetAsResource
     };
   }
+
+  getRedirectUri(): string {
+    return this._authService.getRedirectUri();
+  }
+  getLogoutRedirectUri(): string {
+    return this._authService.getLogoutRedirectUri();
+  }
+  getSilentRedirectUri(): string {
+    return this._authService.getSilentRedirectUri();
+  }
+  getBaseUrl():string{
+    return this._authService.getBaseUrl();
+  }
 }
