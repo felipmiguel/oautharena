@@ -1,16 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title> Tokens </ion-title>
-    <!-- <ion-buttons slot="end">
-      <ion-button (click)="doRefresh()" *ngIf="hasRefreshToken()">
-        <ion-icon slot="end" name="refresh"></ion-icon>
-        Refresh token
-      </ion-button>
-      <ion-button (click)="doRefresh()" *ngIf="!hasRefreshToken()">
-        <ion-icon slot="end" name="mic-off"></ion-icon>
-        Silent renew
-      </ion-button>
-    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
 
@@ -40,6 +30,17 @@
     <ion-button (click)="openToken('access_token', getAccessToken())">
       <ion-icon name="open-outline"></ion-icon>
     </ion-button>
+  </ion-card>
+  <ion-card *ngIf="getNotAcceptedScopes().length>0">
+    <ion-card-header>
+      <ion-card-title>Not accepted scopes</ion-card-title>
+    </ion-card-header>
+    <ion-card-content> 
+      <ion-list>
+        <ion-item *ngFor="let scp of getNotAcceptedScopes()">
+          {{scp}}
+        </ion-item>
+      </ion-list> </ion-card-content>
   </ion-card>
   <ion-card *ngIf="isLoggedIn()">
     <ion-card-header>

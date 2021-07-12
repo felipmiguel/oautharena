@@ -8,11 +8,9 @@ import {
 import * as JWT from "jwt-decode";
 import { AuthenticationOptions } from "./configuration/authentication-options";
 import { Platform } from "@ionic/angular";
-import { Plugins } from "@capacitor/core";
 import { ConfigurationManagerService } from "./configuration/configuration-manager.service";
 import { environment } from "src/environments/environment";
 
-const { Storage } = Plugins;
 
 @Injectable({
   providedIn: "root",
@@ -104,7 +102,6 @@ export class AuthService {
 
 
   public getBaseUrl(): string {
-    console.log(`baseurl:${location.origin}`);
     return location.origin;
   }
 
@@ -136,7 +133,6 @@ export class AuthService {
   }
 
   private isApp(): boolean {
-
     return this.platform.is("android") || this.platform.is("ios");
   }
 
@@ -194,7 +190,19 @@ export class AuthService {
     }
 
     console.log("completeAuthentication:" + url);
+    const requestedScopes = this._userManager.settings.scope.split(' ');
     this._user = await this._userManager.signinRedirectCallback(url);
+
+  }
+  getNotAcceptedScopes(requestedScopesRaw: string, acceptedScopesRaw: string): string[] {
+    const requestedScopes = requestedScopesRaw.split(' ');
+    const acceptedScopes = acceptedScopesRaw.split(' ');
+    const notAcceptedScopes = requestedScopes.filter((scp: string) => acceptedScopes.findIndex(scpr => scpr === scp) === -1);
+    return notAcceptedScopes;
+  }
+
+  getNotAcceptedScopesDefault():string[]{
+    return this.getNotAcceptedScopes(this._userManager.settings.scope, this._user.scopes.join(' '));
   }
 
   getIdTokenClaims(): any {

@@ -62,6 +62,13 @@ export class Tab1Page implements OnInit {
   isLoggedIn(): boolean {
     return this._authService.isLoggedIn();
   }
+  getNotAcceptedScopes(): string[] {
+    if (this.isLoggedIn()) {
+      return this._authService.getNotAcceptedScopes(this.scopes, this._authService.getScope());
+    } else {
+      return [];
+    }
+  }
 
   async saveConfig() {
     var config: AuthenticationOptions = {
@@ -114,7 +121,7 @@ export class Tab1Page implements OnInit {
   getSilentRedirectUri(): string {
     return this._authService.getSilentRedirectUri();
   }
-  getBaseUrl():string{
+  getBaseUrl(): string {
     return this._authService.getBaseUrl();
   }
 }

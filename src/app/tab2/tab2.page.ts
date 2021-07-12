@@ -9,7 +9,7 @@ const { Toast } = Plugins;
   styleUrls: ["tab2.page.scss"],
 })
 export class Tab2Page {
-  constructor(private _authService: AuthService) {}
+  constructor(private _authService: AuthService) { }
 
   isLoggedIn(): boolean {
     return this._authService.isLoggedIn();
@@ -40,14 +40,18 @@ export class Tab2Page {
     return rt && rt.length > 0;
   }
 
-  async doRefresh() {
-    try {
-      await this._authService.signinSilent();
-    } catch (e) {
-      Toast.show({
-        text: e,
-      });
-    }
+  // async doRefresh() {
+  //   try {
+  //     await this._authService.signinSilent();
+  //   } catch (e) {
+  //     Toast.show({
+  //       text: e,
+  //     });
+  //   }
+  // }
+
+  getNotAcceptedScopes(): string[] {
+    return this._authService.getNotAcceptedScopesDefault();
   }
 
   openToken(tokenType: string, token: string) {
