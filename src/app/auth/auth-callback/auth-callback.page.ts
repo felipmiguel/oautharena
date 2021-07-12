@@ -16,19 +16,19 @@ export class AuthCallbackPage implements OnInit {
   ngOnInit() {
     console.log("init callback");
     this.route.url.subscribe((routedUrl) => {
-      console.log('route.queryParams: '+ this.route.queryParams);
+      console.log('route.queryParams: ' + this.route.queryParams);
       console.log('route.url:' + this.route.url);
       console.log('routedurl: ' + routedUrl);
       var url: string;
       url = routedUrl.join('/');
       console.log('url to complete auth: ' + url);
       this.authService.completeAuthentication(url).then(() => {
-        this.currentStatus = 'Proceso completado correctamente, redirigiendo a la página principal...';
+        this.currentStatus = 'Successful authentication, redirect to home page...';
         console.log('authentication completed');
         console.log('id_token: ' + this.authService.getIdToken());
         console.log('access_token: ' + this.authService.getAccessToken());
         this.toastController.create({
-          message: 'Proceso completado correctamente!',
+          message: 'Authentication Succeded!',
           duration: 500
         }).then(toast => {
 
@@ -50,7 +50,7 @@ export class AuthCallbackPage implements OnInit {
 
   private showErrorMessage(reason: any) {
     this.toastController.create({
-      header: 'Error al procesar la respuesta del identity provider',
+      header: 'Error while processing the identity provider response',
       message: reason,
       buttons: [
         {

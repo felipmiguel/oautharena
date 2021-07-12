@@ -6,11 +6,11 @@ import {
   UserManagerSettings,
 } from "oidc-client";
 import * as JWT from "jwt-decode";
-import { Constants } from "src/constants";
 import { AuthenticationOptions } from "./configuration/authentication-options";
 import { Platform } from "@ionic/angular";
 import { Plugins } from "@capacitor/core";
 import { ConfigurationManagerService } from "./configuration/configuration-manager.service";
+import { environment } from "src/environments/environment";
 
 const { Storage } = Plugins;
 
@@ -21,6 +21,7 @@ export class AuthService {
 
   private _userManager: UserManager;
   private _user: User;
+  private _scope: string;
 
   constructor(
     private platform: Platform,
@@ -36,7 +37,9 @@ export class AuthService {
   createUserManagerSettings(
     authOptions: AuthenticationOptions
   ): UserManagerSettings {
-    let scope: string = authOptions.scopes;
+    this._scope = authOptions.scopes;
+    let finalScope: string = authOptions.scopes;
+
 
     let redirect_uri: string;
     let logout_redirect_uri: string;
@@ -47,14 +50,14 @@ export class AuthService {
       if (authOptions.targetAsResource == true) {
         extraParams = new Map([["resource", authOptions.targetApi]]);
       } else {
-        scope += ` ${authOptions.targetApi}/User.Read`;
+        finalScope += ` ${authOptions.targetApi}`;
       }
     }
     console.log("current url: " + this.platform.url());
 
-    
-      redirect_uri = this.getRedirectUri();
-      logout_redirect_uri = this.getLogoutRedirectUri();
+
+    redirect_uri = this.getRedirectUri();
+    logout_redirect_uri = this.getLogoutRedirectUri();
     silent_redirect_uri = this.getSilentRedirectUri();
 
     let cfg: UserManagerSettings = {
@@ -63,7 +66,7 @@ export class AuthService {
       client_secret: authOptions.secret, // app secret. It is strongly NOT recommended for SPA. Do not use for production apps
       redirect_uri: redirect_uri,
       popup_redirect_uri: redirect_uri,
-      scope: scope, // requested scopes: openid required for user login, profile to retrieve user profiles.
+      scope: finalScope, // requested scopes: openid required for user login, profile to retrieve user profiles.
       response_type: "code", // This response type assumes code grant + PKCE.
       post_logout_redirect_uri: logout_redirect_uri, // url to be redirected after closing the session in the STS. In our page it is nessary to clean-up session related data.
       popup_post_logout_redirect_uri: logout_redirect_uri,
@@ -80,7 +83,7 @@ export class AuthService {
 
   public getRedirectUri(): string {
     if (this.isApp()) {
-      return `${Constants.spaSchema}/auth-callback`;
+      return `${environment.spaSchema}/auth-callback`;
 
     } else {
       return `${this.getBaseUrl()}/assets/oidc-login-redirect.html`;
@@ -89,7 +92,7 @@ export class AuthService {
 
   public getLogoutRedirectUri(): string {
     if (this.isApp()) {
-      return `${Constants.spaSchema}/auth-logout`;
+      return `${environment.spaSchema}/auth-logout`;
     } else {
       return `${this.getBaseUrl()}/assets/oidc-login-redirect.html?postLogout=true`;
     }
@@ -143,9 +146,11 @@ export class AuthService {
 
   async signinSilent(apiId?: string): Promise<any> {
     if (apiId && apiId.length > 0) {
+      let scope = `${this._scope} ${apiId}`;
+      console.log(`signingSilent scope=${scope}`);
+
       this._user = await this._userManager.signinSilent({
-        // resource: apiId,
-        scope: `openid profile ${apiId}/User.Read`
+        scope: scope
       });
     } else {
       this._user = await this._userManager.signinSilent();

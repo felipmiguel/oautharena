@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Modals, Plugins } from '@capacitor/core';
 import { AuthenticationOptions } from './authentication-options';
-import { Constants } from 'src/constants';
 
 const { Storage } = Plugins;
 

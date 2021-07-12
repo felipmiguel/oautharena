@@ -8,7 +8,8 @@ import {
   HttpResponse,
   HttpErrorResponse,
 } from "@angular/common/http";
-const { Toast } = Plugins;
+import { ToastController } from "@ionic/angular";
+// const { Toast } = Plugins;
 
 @Component({
   selector: "app-tab4",
@@ -19,7 +20,8 @@ export class Tab4Page implements OnInit {
   constructor(
     private _authService: AuthService,
     private _router: Router,
-    private _httpClient: HttpClient
+    private _httpClient: HttpClient,
+    private _toastController: ToastController
   ) {}
 
   ngOnInit() {}
@@ -41,7 +43,15 @@ export class Tab4Page implements OnInit {
       await this._authService.signinSilent();
       await this._router.navigateByUrl("/tabs/tab2");
     } catch (e) {
-      Toast.show(e);
+      console.error(e);
+      const toast = await this._toastController.create({
+        message: e,
+        duration: 5000,
+        position: 'top'
+
+      });
+      await toast.present();
+      // Toast.show(e);
     }
   }
 
@@ -50,7 +60,13 @@ export class Tab4Page implements OnInit {
       let siginResult = await this._authService.signinSilent(this.secondApi);
       await this._router.navigateByUrl("/tabs/tab3");
     } catch (e) {
-      Toast.show(e);
+      console.error(e);
+      const toast = await this._toastController.create({
+        message: e,
+        duration: 5000,
+        position: 'top'
+      });
+      toast.present();
     }
   }
 

@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  otherApp: ''
+  otherApp: '',
+  spaSchema: 'https://identityspa.z6.web.core.windows.net'
 };
 
 /*
